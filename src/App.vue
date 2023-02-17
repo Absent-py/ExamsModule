@@ -1,9 +1,3 @@
 <template>
-  <v-container>
-    <Preview/>
-  </v-container>
+  <router-view></router-view>
 </template>
-
-<script setup lang="ts">
-import Preview from './components/Preview.vue'
-</script>
