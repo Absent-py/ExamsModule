@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="container">
     <h1 class="mb-5">Exams Module</h1>
     <v-card class="card">
       <p>Данный модуль предназначен для создания и прохождения тестирований, обработки результатов, а также их импорт и экспорта. Проект выполнен на Фреймворке Vue.js 3 + Vite + TS + Vuetify.</p>
@@ -22,7 +22,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.container {
+  max-width: 80%;
+}
 .card {
   max-width: 70%;
   margin: auto auto 30px;
