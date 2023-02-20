@@ -183,6 +183,15 @@ export default {
     edit_state: false,
   }),
   methods: {
+    numberValidation(string) {
+      let valid = '0123456789';
+      for (let i = 0; i < string.length; i++) {
+        if (valid.includes(string[i]) === false) {
+          return false;
+        }
+      }
+      return true;
+    },
     addAnswer() {
       this.answers.push({
         'id': this.current_answer + 1, 'text': '', 'truth': false
@@ -264,21 +273,23 @@ export default {
         return 0
       }
 
-      // this.score = parseInt(this.score);
-      // this.part_score = parseInt(this.part_score);
-      //
-      // let max_safe_int = 9007199254740991;
-      // if (typeof(this.score) !== 'number' || this.score > max_safe_int || this.score < 0) {
-      //   this.snackbar_text = 'Балл должен быть числом!';
-      //   this.snackbar = true;
-      //   return 0
-      // }
-      //
-      // if (typeof(this.part_score) !== 'number' || this.part_score > max_safe_int || this.part_score < 0) {
-      //   this.snackbar_text = 'Частичный балл должен быть числом!';
-      //   this.snackbar = true;
-      //   return 0
-      // }
+      if (this.numberValidation(this.score) === false) {
+        this.snackbar_text = 'Балл должен быть числом!';
+        this.snackbar = true;
+        return 0
+      }
+
+      if (this.numberValidation(this.part_score) === false) {
+        this.snackbar_text = 'Частичный балл должен быть числом!';
+        this.snackbar = true;
+        return 0
+      }
+
+      if (Number(this.part_score) >= Number(this.score)) {
+        this.snackbar_text = 'Частичный балл не может быть больше суммарного!';
+        this.snackbar = true;
+        return 0
+      }
 
       let right = [];
       for (let i = 0; i < this.answers.length; i++) {
@@ -300,7 +311,7 @@ export default {
           'id': this.current_question,
           'text': this.question,
           'answers': this.answers,
-          'part_score': this.part_score,
+          'part_score': Number(this.part_score),
           'score': Number(this.score),
           'type': type,
           'right': right
@@ -319,7 +330,7 @@ export default {
           'id': this.current_question,
           'text': this.question,
           'answers': this.answers,
-          'part_score': this.part_score,
+          'part_score': Number(this.part_score),
           'score': Number(this.score),
           'type': type,
           'right': right
