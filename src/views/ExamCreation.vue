@@ -132,6 +132,9 @@
         <v-btn v-if="dialog_type === 'edit'" class="mt-9" block color="grey-darken-2" @click="editQuestion(dialog_data)">
           <h4>{{ dialog_button }}</h4>
         </v-btn>
+        <v-btn v-if="dialog_type === 'none'" class="mt-9" block color="grey-darken-2" @click="">
+          <h4>{{ dialog_button }}</h4>
+        </v-btn>
       </v-container>
     </v-card>
   </v-dialog>
@@ -165,7 +168,7 @@ export default {
     current_answer: 0,
     test: [],
 
-    score: 1,
+    score: 3,
     part_score: 1,
 
     snackbar: false,
@@ -261,6 +264,22 @@ export default {
         return 0
       }
 
+      // this.score = parseInt(this.score);
+      // this.part_score = parseInt(this.part_score);
+      //
+      // let max_safe_int = 9007199254740991;
+      // if (typeof(this.score) !== 'number' || this.score > max_safe_int || this.score < 0) {
+      //   this.snackbar_text = 'Балл должен быть числом!';
+      //   this.snackbar = true;
+      //   return 0
+      // }
+      //
+      // if (typeof(this.part_score) !== 'number' || this.part_score > max_safe_int || this.part_score < 0) {
+      //   this.snackbar_text = 'Частичный балл должен быть числом!';
+      //   this.snackbar = true;
+      //   return 0
+      // }
+
       let right = [];
       for (let i = 0; i < this.answers.length; i++) {
         if (this.answers[i].truth === true) {
@@ -291,6 +310,9 @@ export default {
         this.current_answer = 0;
         this.answers = [];
         this.question = '';
+
+        this.score = 3;
+        this.part_score = 1;
       }
       else {
         this.questions[this.dialog_data - 1] = {
@@ -307,6 +329,9 @@ export default {
         this.current_answer = 0;
         this.answers = [];
         this.question = '';
+
+        this.score = 3;
+        this.part_score = 1;
 
         this.edit_state = false;
       }
@@ -353,12 +378,14 @@ export default {
 
       this.dialog_text = 'Ваш тест полностью готов! Если вы уверены, что все заполнено правильно, то можете переходить к просмотру теста';
       this.dialog_button = 'Перейти к тесту';
+      this.dialog_type = 'none';
       this.dialog = true;
     },
     downloadTest() {
       // Write some code!!!
       this.dialog_text = 'Вы можете экспортировать тест в формате jSON, потом его можно будет также импортировать';
       this.dialog_button = 'Сохранить тест';
+      this.dialog_type = 'none';
       this.dialog = true;
     },
     getQuestionType() {
@@ -380,12 +407,14 @@ export default {
     exit() {
       this.dialog_text = 'Вы уверены, что хотите выйти? Данное тестирование не будет сохранено!';
       this.dialog_button = 'Выйти';
+      this.dialog_type = 'return';
       this.dialog = true;
     },
     saveNExit() {
       // Write some code!!!
       this.dialog_text = 'Вы можете выйти из текущего тестирования с сохранением промежуточного варианта, сможете продолжить, когда вы вернетесь!';
       this.dialog_button = 'Сохранить и выйти';
+      this.dialog_type = 'return';
       this.dialog = true;
     },
     returnToMain() {
