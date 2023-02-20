@@ -21,27 +21,38 @@
             <h4>Введите описание теста</h4>
             <v-textarea v-model="description" variant="underlined"></v-textarea>
             <h4>Добавленные вопросы</h4>
-            <v-container v-for="item in this.questions" :key="item">
-              <v-card>
-                <v-container>
-                  <v-row>
-                    <p class="mr-7">{{ item.id }}.</p>
-                    <p>{{ item.text }}</p>
-                    <v-spacer></v-spacer>
-                    <v-btn v-if="edit_state === false" variant="plain" icon @click="editDialog(item.id)">
-                      <font-awesome-icon icon="fa-solid fa-pen-to-square" />
-                    </v-btn>
-                    <v-btn v-if="edit_state === false" variant="plain" icon @click="deleteQuestion(item.id)">
-                      <font-awesome-icon icon="fa-solid fa-trash" />
-                    </v-btn>
+            <v-container>
+              <draggable
+                  :disabled="tryToDrag()"
+                  v-model="questions"
+                  @start="drag=true"
+                  @end="updateQuestions"
+                  item-key="id">
+                <template #item="{element}">
+                  <v-container>
+                    <v-card>
+                      <v-container>
+                        <v-row>
+                          <p class="mr-7">{{ element.id }}.</p>
+                          <p>{{ element.text }}</p>
+                          <v-spacer></v-spacer>
+                          <v-btn v-if="edit_state === false" variant="plain" icon @click="editDialog(element.id)">
+                            <font-awesome-icon icon="fa-solid fa-pen-to-square" />
+                          </v-btn>
+                          <v-btn v-if="edit_state === false" variant="plain" icon @click="deleteQuestion(element.id)">
+                            <font-awesome-icon icon="fa-solid fa-trash" />
+                          </v-btn>
 
-                  </v-row>
-                  <v-row>
-                    <p class="mr-7">Верные варианты:</p>
-                    <p>{{ getRightAnswers(item.right) }}</p>
-                  </v-row>
-                </v-container>
-              </v-card>
+                        </v-row>
+                        <v-row>
+                          <p class="mr-7">Верные варианты:</p>
+                          <p>{{ getRightAnswers(element.right) }}</p>
+                        </v-row>
+                      </v-container>
+                    </v-card>
+                  </v-container>
+                </template>
+              </draggable>
             </v-container>
             <v-container>
               <v-row>
@@ -141,10 +152,16 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 
 export default {
   name: "ExamCreation",
+  components: {
+    draggable
+  },
   data: () => ({
+    drag: false,
+
     author: 'Шевнина Юлия Сергеевна',
 
     current_subject: '',
@@ -183,8 +200,25 @@ export default {
     edit_state: false,
   }),
   methods: {
+    tryToDrag() {
+      if (this.edit_state === false) {
+        return false;
+      }
+      else {
+        return true;
+      }
+    },
+    updateQuestions() {
+      this.drag = false;
+      for (let i = 0; i < this.questions.length; i++) {
+        this.questions[i].id = i + 1;
+      }
+    },
     numberValidation(string) {
       let valid = '0123456789';
+      if (string[0] === '0') {
+        return false;
+      }
       for (let i = 0; i < string.length; i++) {
         if (valid.includes(string[i]) === false) {
           return false;
@@ -230,6 +264,8 @@ export default {
       this.question = current_question_data.text;
       this.answers = current_question_data.answers;
       this.current_answer = current_question_data.answers.length;
+      this.score = current_question_data.score;
+      this.part_score = current_question_data.part_score;
 
       this.edit_state = true;
     },
@@ -273,22 +309,32 @@ export default {
         return 0
       }
 
+      let type;
+      if (this.getQuestionType() === 1) {
+        type = 'single';
+      }
+      else {
+        type = 'multiple';
+      }
+
       if (this.numberValidation(this.score) === false) {
         this.snackbar_text = 'Балл должен быть числом!';
         this.snackbar = true;
         return 0
       }
 
-      if (this.numberValidation(this.part_score) === false) {
-        this.snackbar_text = 'Частичный балл должен быть числом!';
-        this.snackbar = true;
-        return 0
-      }
+      if (type === 'multiple') {
+        if (this.numberValidation(this.part_score) === false) {
+          this.snackbar_text = 'Частичный балл должен быть числом!';
+          this.snackbar = true;
+          return 0
+        }
 
-      if (Number(this.part_score) >= Number(this.score)) {
-        this.snackbar_text = 'Частичный балл не может быть больше суммарного!';
-        this.snackbar = true;
-        return 0
+        if (Number(this.part_score) >= Number(this.score)) {
+          this.snackbar_text = 'Частичный балл не может быть больше суммарного!';
+          this.snackbar = true;
+          return 0
+        }
       }
 
       let right = [];
@@ -296,14 +342,6 @@ export default {
         if (this.answers[i].truth === true) {
           right.push(this.answers[i].text);
         }
-      }
-
-      let type;
-      if (this.getQuestionType() === 1) {
-        type = 'single';
-      }
-      else {
-        type = 'multiple';
       }
 
       if (this.edit_state === false) {

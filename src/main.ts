@@ -12,6 +12,7 @@ import * as directives from 'vuetify/directives'
 import Home from '../src/views/Home.vue'
 import ExamCreation from './views/ExamCreation.vue'
 import ExamPreview from './views/ExamPreview.vue'
+import ExamsList from './views/ExamsList.vue'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -20,9 +21,10 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { faList } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
-library.add(faPlus, faTrash, faPenToSquare)
+library.add(faPlus, faTrash, faPenToSquare, faList)
 
 const router = createRouter({
     history: createWebHistory(),
@@ -41,6 +43,11 @@ const router = createRouter({
             path: '/preview',
             name: 'ExamPreview',
             component: ExamPreview
+        },
+        {
+            path: '/list',
+            name: 'ExamsList',
+            component: ExamsList
         },
     ]
 })

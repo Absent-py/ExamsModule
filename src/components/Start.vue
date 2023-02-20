@@ -7,7 +7,25 @@
     <v-card class="card" @click="$router.push('/create')">
       <v-card-text>
         <v-row align="center" justify="center">
-          <p>1. Перейдите во вкладку 'Создание тестирования'</p>
+          <p>1. Перейдите ко вкладку 'Создание тестирования'</p>
+          <v-spacer></v-spacer>
+          <font-awesome-icon class="fa-2x" icon="fa-solid fa-plus" />
+        </v-row>
+      </v-card-text>
+    </v-card>
+    <v-card class="card" @click="$router.push('/list')">
+      <v-card-text>
+        <v-row align="center" justify="center">
+          <p>2. Перейдите к списку доступных тестирований</p>
+          <v-spacer></v-spacer>
+          <font-awesome-icon class="fa-2x" icon="fa-solid fa-list" />
+        </v-row>
+      </v-card-text>
+    </v-card>
+    <v-card class="card" @click="">
+      <v-card-text>
+        <v-row align="center" justify="center">
+          <p>3. Импортируйте тестирование</p>
           <v-spacer></v-spacer>
           <font-awesome-icon class="fa-2x" icon="fa-solid fa-plus" />
         </v-row>
