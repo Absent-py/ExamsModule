@@ -14,4 +14,15 @@ function getStatus () {
     return state.status
 }
 
-export default { setStatus, getStatus }
+function addExam(examObject) {
+    state.exams.push(examObject)
+}
+
+function getExam(id = 0) {
+    if (id == 0) {
+        return state.exams
+    }
+    else return state.exams[id]
+}
+
+export default { setStatus, getStatus, addExam, getExam }

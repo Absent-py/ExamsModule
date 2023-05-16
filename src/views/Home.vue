@@ -44,7 +44,7 @@ export default {
     methods: {
         commitStatus() {
             State.setStatus(this.status)
-            this.$router.push('/teacher/')
+            this.$router.push(`/${this.status}/`)
         }
     }
 }
