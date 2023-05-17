@@ -9,6 +9,7 @@ import MainStudent  from '../views/Student/Main.vue'
 // Teacher
 import MainTeacher  from '../views/Teacher/Main.vue'
 import ExamCreate from '../views/Teacher/ExamCreate.vue'
+import ExamView from '../views/Teacher/ExamView.vue'
 
 const routes = [
   // Home
@@ -31,6 +32,10 @@ const routes = [
   {
     path: '/teacher/exam/create/',
     component: ExamCreate,
+  },
+  {
+    path: '/teacher/exam/view/',
+    component: ExamView,
   },
 
   // Auto redirect

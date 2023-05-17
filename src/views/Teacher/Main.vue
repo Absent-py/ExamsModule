@@ -8,20 +8,7 @@
 
         <RouterCard title="Создание тестирования" routerPath="/teacher/exam/create/"/>
 
-        <v-card class="mt-5">
-            {{ getExam() }}
-        </v-card>
+        <RouterCard title="Просмотр тестирования" routerPath="/teacher/exam/view/"/>
 
     </v-container>
 </template>
-
-<script>
-import state from '../../helpers/state'
-export default {
-    methods: {
-        getExam() {
-            return state.getExam()
-        }
-    }
-}
-</script>

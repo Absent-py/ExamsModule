@@ -7,6 +7,7 @@ import './style.css'
 import App from './App.vue'
 import Navbar from './components/Navbar.vue'
 import RouterCard from './components/RouterCard.vue'
+import ExamTitleCard from './components/ExamTitleCard.vue'
 
 // Plugins
 import router from './router'
@@ -41,4 +42,5 @@ createApp(App)
   .component('Navbar', Navbar)
   .component('RouterCard', RouterCard)
   .component('font-awesome-icon', FontAwesomeIcon)
+  .component('ExamTitleCard', ExamTitleCard)
   .mount('#app')
